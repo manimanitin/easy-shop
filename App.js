@@ -1,15 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
 
-import ProductContainer from './Screens/Products/ProductContainer';
 import Header from './Shared/Header';
+import Main from './Navigators/Main';
+
 export default function App() {
   return (
     <NativeBaseProvider>
-      <View style={styles.container}>
+      <NavigationContainer >
         <Header />
-        <ProductContainer />
-      </View>
+        <Main />
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }

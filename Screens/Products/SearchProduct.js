@@ -53,6 +53,11 @@ const SearchProduct = (props) => {
                       }}
                       color='coolGray.800'
                       bold
+                      onPress={() => {
+                        props.navigation.navigate('Product details', {
+                          item: item,
+                        });
+                      }}
                     >
                       {item.name}
                     </Text>
@@ -89,4 +94,3 @@ const styles = StyleSheet.create({
   },
 });
 export default SearchProduct;
-
