@@ -1,18 +1,22 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
 
+import store from './Redux/store';
 import Header from './Shared/Header';
 import Main from './Navigators/Main';
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <NavigationContainer >
-        <Header />
-        <Main />
-      </NavigationContainer>
-    </NativeBaseProvider>
+    <Provider store={store}>
+      <NativeBaseProvider>
+        <NavigationContainer>
+          <Header />
+          <Main />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    </Provider>
   );
 }
 

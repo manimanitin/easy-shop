@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import * as actions from '../../Redux/Actions/cartAction';
 
 import {
   Image,
@@ -18,6 +19,8 @@ import {
   VStack,
   Box,
 } from 'native-base';
+
+import { connect } from 'react-redux';
 
 const win = Dimensions.get('window');
 const SingleProduct = (props) => {
@@ -47,11 +50,18 @@ const SingleProduct = (props) => {
         </View>
       </ScrollView>
       <View style={styles.bottomContainer}>
-        <HStack display={'flex'} flexDirection='row' justifyContent={'space-between'}>
+        <HStack
+          display={'flex'}
+          flexDirection='row'
+          justifyContent={'space-between'}
+        >
           <Text style={styles.price}>${item.price}</Text>
-          <InputRightAddon>
-            <Button title='Add' />
-          </InputRightAddon>
+            <Button
+              title='Add'
+              onPress={() => {
+                props.addItemToCart(item);
+              }}
+            />
         </HStack>
       </View>
     </Container>
@@ -94,5 +104,11 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 });
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItemToCart: (product) =>
+      dispatch(actions.addToCart({ quantity: 1, product })),
+  };
+};
 
-export default SingleProduct;
+export default connect(null, mapDispatchToProps)(SingleProduct);
