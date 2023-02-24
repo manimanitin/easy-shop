@@ -74,7 +74,7 @@ const SearchProduct = (props) => {
                 </HStack>
               </Box>
             )}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id.$oid}
           />
         </Box>
       ) : (

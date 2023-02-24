@@ -17,80 +17,86 @@ import {
   VStack,
   Spacer,
 } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 import icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import * as actions from '../../Redux/Actions/cartAction';
+import CartItem from './CartItem';
+import { ScrollView } from 'react-native';
 const { height, width } = Dimensions.get('window');
 
 const Cart = (props) => {
+  var total = 0;
+
+  props.cartItems.forEach((cart) => {
+    return (total += cart.product.price);
+  });
   return (
     <>
-      {props.cartItems.length ? (
-        <FlatList
-          data={props.cartItems}
-          renderItem={({ item }) => (
-            <Box
-              borderBottomWidth='1'
-              _dark={{
-                borderColor: 'gray.600',
-              }}
-              borderColor='coolGray.200'
-              pl='4'
-              pr='5'
-              py='2'
-            >
-              <HStack
-                display={'flex'}
-                flexDirection={'row'}
-                justifyContent='space-between'
-              >
-                <Avatar
-                  size='48px'
-                  source={{
-                    uri: item.product.image
-                      ? item.product.image
-                      : 'https://img.uline.com/is/image/uline/S-4163?$Mobile_Zoom$',
+      <ScrollView>
+        <View style={{ width: width }}>
+          <VStack>
+            {props.cartItems.length > 0 ? (
+              <View>
+                <Box
+                  w={{
+                    base: '100%',
+                    md: '25%',
                   }}
-                />
-                <HStack>
-                  <Text
-                    _dark={{
-                      color: 'warmGray.50',
-                    }}
-                    color='coolGray.800'
-                    bold
-                    onPress={() => {
-                      props.navigation.navigate('Product details', {
-                        item: item,
-                      });
-                    }}
-                  >
-                    {item.product.name}
-                  </Text>
-                  <Spacer />
-                  <Text
-                    alignSelf={'flex-end'}
-                    color='coolGray.600'
-                    _dark={{
-                      color: 'warmGray.200',
-                    }}
-                  >
-                    {item.product.price}
-                  </Text>
-                </HStack>
+                >
+                  {JSON.stringify(styles.hiddenContainer)}
+                  <SwipeListView
+                    recalculateHiddenLayout={true}
+                    useFlatList={true}
+                    data={props.cartItems}
+                    keyExtractor={(data) => data.product._id.$oid.toString()}
+                    renderItem={(data) => <CartItem item={data} />}
+                    renderHiddenItem={(data) => (
+                      <View style={styles.hiddenContainer}>
+                        <TouchableOpacity
+                          onPress={() => props.removeFromCart(data.item)}
+                          style={styles.hiddenButton}
+                        >
+                          <Icon name='trash' color={'white'} size={30} />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    disableRightSwipe={true}
+                    previewOpenDelay={3000}
+                    friction={1000}
+                    tension={40}
+                    leftOpenValue={75}
+                    stopLeftSwipe={75}
+                    rightOpenValue={-75}
+                  />
+                  {/* <CartItem item={props.cartItems} /> */}
+                </Box>
                 <Spacer />
-              </HStack>
-            </Box>
-          )}
-          key={Math.random()}
-        />
-      ) : (
-        <Container style={styles.empty}>
-          <Text> No itemerinos , add now</Text>
-        </Container>
-      )}
+                <HStack>
+                  <Text>${total}</Text>
+                  <Spacer />
+                  <Button title='Clear' onPress={() => props.clearCart()} />
+                  <Spacer />
+                  <Button
+                    title='Checkout'
+                    onPress={() => {
+                      props.navigation.navigate('Checkout');
+                    }}
+                  />
+                </HStack>
+              </View>
+            ) : (
+              <View style={styles.center}>
+                <Text style={{ alignSelf: 'center' }}>No comprados </Text>
+              </View>
+            )}
+          </VStack>
+        </View>
+      </ScrollView>
     </>
   );
 };
@@ -99,6 +105,12 @@ const mapStateToProps = (state) => {
   const { cartItems } = state;
   return {
     cartItems: cartItems,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearCart: () => dispatch(actions.clearCart()),
+    removeFromCart: (item) => dispatch(actions.removeFromCart(item)),
   };
 };
 
@@ -139,6 +151,10 @@ const styles = StyleSheet.create({
     height: 70,
     width: width / 1.2,
   },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
-export default connect(mapStateToProps, null)(Cart);
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

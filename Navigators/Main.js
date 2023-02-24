@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import  Icon  from 'react-native-vector-icons/FontAwesome';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { View } from 'native-base';
 
 import HomeNavigator from './HomeNavigator';
 import CartNavigator from './CartNavigator';
+import CartIcon from '../Shared/CartIcon';
 const Tab = createBottomTabNavigator();
 const Main = () => {
   return (
@@ -14,7 +15,7 @@ const Main = () => {
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarActiveTintColor: '#e91e63',
-        headerShown:false
+        headerShown: false,
       }}
     >
       <Tab.Screen
@@ -32,12 +33,14 @@ const Main = () => {
         }}
       />
       <Tab.Screen
-      
         name='Cart'
         component={CartNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name='shopping-cart' color={color} size={30} />
+            <View>
+              <Icon name='shopping-cart' color={color} size={30} />
+              <CartIcon/>
+            </View>
           ),
         }}
       />
@@ -59,7 +62,7 @@ const Main = () => {
             <Icon name='user' color={color} size={30} />
           ),
         }}
-      />  
+      />
     </Tab.Navigator>
   );
 };
