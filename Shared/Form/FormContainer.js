@@ -2,10 +2,10 @@ import React from 'react';
 import { ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
 
 var { width } = Dimensions.get('window');
-const FormContainer = () => {
+const FormContainer = (props) => {
   return (
-    <ScrollView style={style.container}>
-      <Text style={style.container}>{props.title}</Text>
+    <ScrollView contentContainerStyle={style.container}>
+      <Text style={style.title}>{props.title}</Text>
       {props.children}
     </ScrollView>
   );
@@ -17,7 +17,7 @@ const style = StyleSheet.create({
     marginBottom: 400,
     width: width,
     justifyContent: 'center',
-    alignContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 30,

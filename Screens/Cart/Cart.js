@@ -48,7 +48,7 @@ const Cart = (props) => {
                     md: '25%',
                   }}
                 >
-                  {JSON.stringify(styles.hiddenContainer)}
+                  {JSON.stringify(props.cartItems)}
                   <SwipeListView
                     recalculateHiddenLayout={true}
                     useFlatList={true}

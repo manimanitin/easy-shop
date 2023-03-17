@@ -26,12 +26,11 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import Banner from '../../Shared/Banner';
 import CategoryFilter from './CategoryFilter';
-
+import baseURL from '../../assets/common/baseURL';
+import axios from 'axios';
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
 
-const data = require('../../assets/data/products.json');
-const productCategories = require('../../assets/data/categories.json');
 const ProductContainer = (props) => {
   const [products, setProducts] = useState([]);
   const [filterProducts, setFilterProducts] = useState([]);
@@ -41,14 +40,32 @@ const ProductContainer = (props) => {
   const [initialState, setInitialState] = useState([]);
   const [productsCtg, setProductsCtg] = useState([]);
 
+  const getProducts = async () => {
+    await axios.get(`${baseURL}products`).then((res) => {
+      setProducts(res.data);
+      setFilterProducts(res.data);
+      setProductsCtg(res.data);
+      setInitialState(res.data);
+    });
+  };
+
+  const getCategories = async () => {
+    await axios
+      .get(`${baseURL}categories`)
+      .then((res) => {
+        setCategory(res.data);
+      })
+      .catch((error) => {
+        console.log('api call error');
+      });
+  };
+
   useEffect(() => {
-    setProducts(data);
-    setFilterProducts(data);
     setFocus(false);
-    setCategory(productCategories);
     setActive(-1);
-    setInitialState(data);
-    setProductsCtg(data);
+
+    getProducts();
+    getCategories();
     return () => {
       setProducts([]);
       setFilterProducts([]);
@@ -57,7 +74,7 @@ const ProductContainer = (props) => {
       setActive();
       setInitialState([]);
     };
-  }, [products]);
+  }, []);
 
   const openList = () => {
     setFocus(true);
@@ -80,7 +97,7 @@ const ProductContainer = (props) => {
         ? [setProductsCtg(initialState), setActive(true)]
         : [
             setProductsCtg(
-              products.filter((i) => i.category.$oid === ctg),
+              products.filter((i) => i.category._id === ctg),
               setActive(true)
             ),
           ];
@@ -143,7 +160,10 @@ const ProductContainer = (props) => {
         </VStack>
       </VStack>
       {focus == true ? (
-        <SearchProduct navigation={props.navigation} filterProducts={filterProducts} />
+        <SearchProduct
+          navigation={props.navigation}
+          filterProducts={filterProducts}
+        />
       ) : (
         <ScrollView>
           <View style={styles.container}>
@@ -161,18 +181,15 @@ const ProductContainer = (props) => {
             </View>
             {productsCtg.length > 0 ? (
               <View style={styles.listContainer}>
-                {
-                  productsCtg.map((item)=>{
-                    return(
-                      <ProductList
+                {productsCtg.map((item) => {
+                  return (
+                    <ProductList
                       navigation={props.navigation}
-                      key={item._id.$oid}
+                      key={item._id}
                       item={item}
-                      />
-                    )
-                  })
-               
-                }
+                    />
+                  );
+                })}
               </View>
             ) : (
               <View style={[styles.Center, { height: height / 2 }]}>
