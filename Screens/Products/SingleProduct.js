@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as actions from '../../Redux/Actions/cartAction';
-
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import {
   Image,
   View,
@@ -56,12 +56,18 @@ const SingleProduct = (props) => {
           justifyContent={'space-between'}
         >
           <Text style={styles.price}>${item.price}</Text>
-            <Button
-              title='Add'
-              onPress={() => {
-                props.addItemToCart(item);
-              }}
-            />
+          <Button
+            title='Add'
+            onPress={() => {
+              props.addItemToCart(item),
+                Toast.show({
+                  topOffset: 60,
+                  type: 'success',
+                  text1: `${item.name} added successfully`,
+                  text2: 'go to your cart and complete your order'
+                });
+            }}
+          />
         </HStack>
       </View>
     </Container>

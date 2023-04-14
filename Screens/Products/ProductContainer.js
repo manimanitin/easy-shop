@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   StyleSheet,
   Text,
@@ -39,6 +40,7 @@ const ProductContainer = (props) => {
   const [active, setActive] = useState();
   const [initialState, setInitialState] = useState([]);
   const [productsCtg, setProductsCtg] = useState([]);
+  const [Loading, setLoading] = useState(true);
 
   const getProducts = async () => {
     await axios.get(`${baseURL}products`).then((res) => {
@@ -46,6 +48,7 @@ const ProductContainer = (props) => {
       setFilterProducts(res.data);
       setProductsCtg(res.data);
       setInitialState(res.data);
+      setLoading(false);
     });
   };
 
@@ -60,21 +63,23 @@ const ProductContainer = (props) => {
       });
   };
 
-  useEffect(() => {
-    setFocus(false);
-    setActive(-1);
+  useFocusEffect(
+    useCallback(() => {
+      setFocus(false);
+      setActive(-1);
 
-    getProducts();
-    getCategories();
-    return () => {
-      setProducts([]);
-      setFilterProducts([]);
-      setFocus();
-      setCategory([]);
-      setActive();
-      setInitialState([]);
-    };
-  }, []);
+      getProducts();
+      getCategories();
+      return () => {
+        setProducts([]);
+        setFilterProducts([]);
+        setFocus();
+        setCategory([]);
+        setActive();
+        setInitialState([]);
+      };
+    }, [])
+  );
 
   const openList = () => {
     setFocus(true);
@@ -105,101 +110,109 @@ const ProductContainer = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <VStack
-        space={5}
-        width='100%'
-        divider={
-          <Box px='2'>
-            <Divider />
-          </Box>
-        }
-      >
-        <VStack width='100%' space={5} alignItems='center'>
-          <Input
-            placeholder='Search People & Places'
-            bg='#fff'
+    <>
+      {Loading == false ? (
+        <View style={styles.container}>
+          <VStack
+            space={5}
             width='100%'
-            onFocus={openList}
-            onChangeText={(text) => {
-              productSearch(text);
-              openList();
-            }}
-            borderRadius='4'
-            py='3'
-            px='1'
-            fontSize='14'
-            _web={{
-              _focus: {
-                borderColor: 'muted.300',
-                style: { boxShadow: 'none' },
-              },
-            }}
-            InputLeftElement={
-              <Icon
-                m='2'
-                ml='3'
-                size='6'
-                color='gray.400'
-                as={<MaterialIcons name='search' />}
-              />
+            divider={
+              <Box px='2'>
+                <Divider />
+              </Box>
             }
-            InputRightElement={
-              focus == true ? (
-                <Icon
-                  m='2'
-                  mr='3'
-                  size='6'
-                  color='gray.400'
-                  onPress={onBlur}
-                  as={<MaterialIcons name='close' />}
-                />
-              ) : null
-            }
-          />
-        </VStack>
-      </VStack>
-      {focus == true ? (
-        <SearchProduct
-          navigation={props.navigation}
-          filterProducts={filterProducts}
-        />
-      ) : (
-        <ScrollView>
-          <View style={styles.container}>
-            <View>
-              <Banner />
-            </View>
-            <View>
-              <CategoryFilter
-                categories={category}
-                categoryFilter={changeCtg}
-                productsCtg={productsCtg}
-                active={active}
-                setActive={setActive}
-              />
-            </View>
-            {productsCtg.length > 0 ? (
-              <View style={styles.listContainer}>
-                {productsCtg.map((item) => {
-                  return (
-                    <ProductList
-                      navigation={props.navigation}
-                      key={item._id}
-                      item={item}
+          >
+            <VStack width='100%' space={5} alignItems='center'>
+              <Input
+                placeholder='Search People & Places'
+                bg='#fff'
+                width='100%'
+                onFocus={openList}
+                onChangeText={(text) => {
+                  productSearch(text);
+                  openList();
+                }}
+                borderRadius='4'
+                py='3'
+                px='1'
+                fontSize='14'
+                _web={{
+                  _focus: {
+                    borderColor: 'muted.300',
+                    style: { boxShadow: 'none' },
+                  },
+                }}
+                InputLeftElement={
+                  <Icon
+                    m='2'
+                    ml='3'
+                    size='6'
+                    color='gray.400'
+                    as={<MaterialIcons name='search' />}
+                  />
+                }
+                InputRightElement={
+                  focus == true ? (
+                    <Icon
+                      m='2'
+                      mr='3'
+                      size='6'
+                      color='gray.400'
+                      onPress={onBlur}
+                      as={<MaterialIcons name='close' />}
                     />
-                  );
-                })}
+                  ) : null
+                }
+              />
+            </VStack>
+          </VStack>
+          {focus == true ? (
+            <SearchProduct
+              navigation={props.navigation}
+              filterProducts={filterProducts}
+            />
+          ) : (
+            <ScrollView>
+              <View style={styles.container}>
+                <View>
+                  <Banner />
+                </View>
+                <View>
+                  <CategoryFilter
+                    categories={category}
+                    categoryFilter={changeCtg}
+                    productsCtg={productsCtg}
+                    active={active}
+                    setActive={setActive}
+                  />
+                </View>
+                {productsCtg.length > 0 ? (
+                  <View style={styles.listContainer}>
+                    {productsCtg.map((item) => {
+                      return (
+                        <ProductList
+                          navigation={props.navigation}
+                          key={item._id}
+                          item={item}
+                        />
+                      );
+                    })}
+                  </View>
+                ) : (
+                  <View style={[styles.Center, { height: height / 2 }]}>
+                    <Text>no products found</Text>
+                  </View>
+                )}
               </View>
-            ) : (
-              <View style={[styles.Center, { height: height / 2 }]}>
-                <Text>no products found</Text>
-              </View>
-            )}
-          </View>
-        </ScrollView>
+            </ScrollView>
+          )}
+        </View>
+      ) : (
+        <View>
+          <ActivityIndicator size={'large'} color={'red'} />
+        </View>
       )}
-    </View>
+    </>
   );
 };
 const styles = StyleSheet.create({
