@@ -18,6 +18,7 @@ import {
   Spacer,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import EasyButton from '../../Shared/StyledComponents/EasyButton';
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 
@@ -48,12 +49,11 @@ const Cart = (props) => {
                     md: '25%',
                   }}
                 >
-                  {JSON.stringify(props.cartItems)}
                   <SwipeListView
                     recalculateHiddenLayout={true}
                     useFlatList={true}
                     data={props.cartItems}
-                    keyExtractor={(data) => data.product._id.$oid.toString()}
+                    keyExtractor={(data) => data.product._id.toString()}
                     renderItem={(data) => <CartItem item={data} />}
                     renderHiddenItem={(data) => (
                       <View style={styles.hiddenContainer}>
@@ -79,14 +79,18 @@ const Cart = (props) => {
                 <HStack>
                   <Text>${total}</Text>
                   <Spacer />
-                  <Button title='Clear' onPress={() => props.clearCart()} />
+                  <EasyButton danger medium onPress={() => props.clearCart()} >
+                    <Text style={{ color: 'white' }}>Clear</Text>
+                  </EasyButton>
                   <Spacer />
-                  <Button
-                    title='Checkout'
+                  <EasyButton
+                    primary
+                    medium
                     onPress={() => {
                       props.navigation.navigate('Checkout');
-                    }}
-                  />
+                    }} >
+                    <Text style={{ color: 'white' }}>Checkout</Text>
+                  </EasyButton>
                 </HStack>
               </View>
             ) : (
