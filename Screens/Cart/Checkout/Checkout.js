@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Button } from 'react-native';
-import { Item, Picker, Select, Toast } from 'native-base';
+import { Select, Toast } from 'native-base';
 import FormContainer from '../../../Shared/Form/FormContainer';
 import Input from '../../../Shared/Form/input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -102,9 +102,9 @@ const Checkout = (props) => {
 const mapStateToProps = (state) => {
   const { cartItems } = state;
   return {
-      cartItems: cartItems,
-  }
-}
+    cartItems: cartItems,
+  };
+};
 
 
-export default connect(mapStateToProps)(Checkout)
+export default connect(mapStateToProps)(Checkout);
