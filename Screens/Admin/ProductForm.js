@@ -14,6 +14,9 @@ import axios from 'axios';
 
 const ProductForm = (props) => {
 
+
+
+
     const [pickerValue, setPickerValue] = useState();
     const [brand, setBrand] = useState();
     const [name, setName] = useState();
@@ -32,14 +35,25 @@ const ProductForm = (props) => {
     const [numReviews, setNumReviews] = useState(0);
     const [item, setItem] = useState(null);
 
+
+    const getCategories = async () => {
+        await axios.get(`${baseURL}categories`).then((res) => {
+            setCategories(res.data);
+        });
+    };
+    useEffect(() => {
+        getCategories();
+        return () => {
+            setCategory([]);
+        };
+    }, []);
+
     return (
         <FormContainer title='Add product'>
-            <View>
-                <Image source={{ uri: mainImage }} />
-                <TouchableOpacity>
-                    <Text>
-                        Image
-                    </Text>
+            <View style={styles.imageContainer}>
+                <Image style={styles.image} source={{ uri: mainImage }} />
+                <TouchableOpacity style={styles.imagePicker}>
+                    <Icon style={{ color: 'white' }} name='camera' />
                 </TouchableOpacity>
             </View>
             <View>
@@ -104,7 +118,31 @@ const ProductForm = (props) => {
                 value={description}
                 onChangeText={(text) => setDescription(text)}
             />
-        </FormContainer>
+            <Select
+                style={{ width: undefined }}
+                placeholder='Select your category'
+                selectedValue={pickerValue}
+                placeholderTextColor={'#007aff'}
+                onValueChange={(e) => [setPickerValue(e), setCategory(e)]}
+            >
+                {categories.map((c) => {
+                    return (
+                        <Select.Item key={c.id} label={c.name} value={c.id} />
+                    );
+                })}
+            </Select>
+            {error ? <Error message={err} /> : null}
+            <View>
+                <EasyButton
+                    style={styles.buttonContainer}
+                    large
+                    primary>
+                    <Text style={styles.buttonText}>
+                        Confirm
+                    </Text>
+                </EasyButton>
+            </View>
+        </FormContainer >
     );
 };
 
