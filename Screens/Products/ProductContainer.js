@@ -101,11 +101,11 @@ const ProductContainer = (props) => {
       ctg === 'all'
         ? [setProductsCtg(initialState), setActive(true)]
         : [
-            setProductsCtg(
-              products.filter((i) => i.category._id === ctg),
-              setActive(true)
-            ),
-          ];
+          setProductsCtg(
+            products.filter((i) => i.category ? (i.category._id === ctg) : null),
+            setActive(true)
+          ),
+        ];
     }
   };
 

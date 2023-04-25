@@ -48,7 +48,7 @@ const ListItem = (props) => {
                             medium
                             secondary
                             onPress={() => {
-                                props.navigation.navigate('ProductForm');
+                                props.navigation.navigate('ProductForm', { item: props });
                                 setModalVisible(false);
                             }} >
                             <Text style={styles.textStyle}>Edit</Text>
@@ -79,7 +79,7 @@ const ListItem = (props) => {
                     style={styles.image} />
                 <Text style={styles.item}>{props.brand}</Text>
                 <Text style={styles.item} numberOfLines={1} ellipsizeMode='tail'>{props.name}</Text>
-                <Text style={styles.item} numberOfLines={1} ellipsizeMode='tail'>{props.category.name}</Text>
+                <Text style={styles.item} numberOfLines={1} ellipsizeMode='tail'>{props.category ? props.category.name : ''}</Text>
                 <Text style={styles.item}>$ {props.price}</Text>
 
             </TouchableOpacity>
