@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER } from "../actions/Auth.actions";
+import { SET_CURRENT_USER } from "../actions/Auth.Actions";
 import isEmpty from "../../assets/common/isEmpty";
 
 export default function (state, action) {

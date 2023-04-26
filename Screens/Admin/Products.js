@@ -1,9 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
-import { Spacer, Box, HStack, VStack, Divider, Input, Icon, ScrollView, Modal } from 'native-base';
+import { Spacer, Box, HStack, VStack, Divider, Input, ScrollView, Modal } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import ListItem from './ListItem';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import axios from 'axios';
 import baseURL from '../../assets/common/baseURL';
@@ -179,6 +181,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     container: {
+        flex: 1,
         marginBottom: 160,
         backgroundColor: 'white'
     },

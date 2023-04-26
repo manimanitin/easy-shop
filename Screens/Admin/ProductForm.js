@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Error from '../../Shared/Error';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import baseURL from '../../assets/common/baseURL';
+import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import mime from 'mime';
@@ -30,7 +30,7 @@ const ProductForm = (props) => {
     const [categories, setCategories] = useState([]);
     const [token, setToken] = useState();
     const [error, setError] = useState();
-    const [countInStock, setCountInStock] = useState();
+    const [countInStock, setCountInStock] = useState('');
     const [rating, setRating] = useState(0);
     const [isFeatured, setIsFeatured] = useState(false);
     const [richDescription, setRichDescription] = useState('');
@@ -170,15 +170,15 @@ const ProductForm = (props) => {
         if (!props.route.params) {
             setItem(null);
         } else {
-            setItem(prop.route.params.item);
-            setBrand(prop.route.params.item.brand);
-            setName(prop.route.params.item.name);
-            setPrice(prop.route.params.item.price.toString());
-            setDescription(prop.route.params.item.description);
-            setMainImage(prop.route.params.item.mainImage);
-            setImage(prop.route.params.item.image);
-            setCategory(prop.route.params.item.categories._id);
-            setCountInStock(prop.route.params.item.countInStock.toString());
+            setItem(props.route.params.item);
+            setBrand(props.route.params.item.brand);
+            setName(props.route.params.item.name);
+            setPrice(props.route.params.item.price.toString());
+            setDescription(props.route.params.item.description);
+            setMainImage(props.route.params.item.mainImage);
+            setImage(props.route.params.item.image);
+            setCategory(props.route.params.item.category?props.route.params.item.category._id:null);
+            setCountInStock(props.route.params.item.countInStock.toString());
 
 
         }

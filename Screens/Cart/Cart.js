@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Dimensions,
@@ -24,13 +24,18 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 
 import icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-
 import * as actions from '../../Redux/Actions/cartAction';
 import CartItem from './CartItem';
+import AuthGlobal from '../../Context/store/AuthGlobal';
+
 import { ScrollView } from 'react-native';
+
+
 const { height, width } = Dimensions.get('window');
 
 const Cart = (props) => {
+
+  const context = useContext(AuthGlobal);
   var total = 0;
 
   props.cartItems.forEach((cart) => {
@@ -83,14 +88,26 @@ const Cart = (props) => {
                     <Text style={{ color: 'white' }}>Clear</Text>
                   </EasyButton>
                   <Spacer />
-                  <EasyButton
-                    primary
-                    medium
-                    onPress={() => {
-                      props.navigation.navigate('Checkout');
-                    }} >
-                    <Text style={{ color: 'white' }}>Checkout</Text>
-                  </EasyButton>
+                  {context.stateUser.isAuthenticated ? (
+                    <EasyButton
+                      primary
+                      medium
+                      onPress={() => {
+                        props.navigation.navigate('Checkout');
+                      }} >
+                      <Text style={{ color: 'white' }}>Checkout</Text>
+                    </EasyButton>
+                  ) : (
+                    <EasyButton
+                      secondary
+                      medium
+                      onPress={() => {
+                        props.navigation.navigate('Login');
+                      }} >
+                      <Text style={{ color: 'white' }}>Login</Text>
+                    </EasyButton>
+                  )}
+
                 </HStack>
               </View>
             ) : (

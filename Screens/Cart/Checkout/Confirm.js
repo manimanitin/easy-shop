@@ -42,7 +42,7 @@ const Confirm = (props) => {
         setTimeout(() => {
           props.clearCart();
           props.navigation.navigate('Cart');
-        });
+        }, 500);
       })
       .catch((err) => {
         Toast.show({
@@ -61,6 +61,7 @@ const Confirm = (props) => {
       }
     };
     const order = finalOrder.order.order;
+    console.log(order);
     postOrders(order, config);
   };
 
@@ -76,6 +77,7 @@ const Confirm = (props) => {
   const confirm = props.route.params;
   return (
     <ScrollView contentContainerStyle={style.container}>
+      {JSON.stringify(finalOrder)}
       <View style={style.title}>
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Confirm Order</Text>
         {props.route.params ? (
