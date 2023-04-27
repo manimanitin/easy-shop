@@ -16,9 +16,6 @@ import { set } from 'react-native-reanimated';
 
 const ProductForm = (props) => {
 
-
-
-
     const [pickerValue, setPickerValue] = useState();
     const [brand, setBrand] = useState('');
     const [name, setName] = useState('');
@@ -46,7 +43,7 @@ const ProductForm = (props) => {
     };
 
     const putProducts = async (formData, config) => {
-        await axios.post(`${baseURL}products/${item.id}`, formData, config).
+        await axios.put(`${baseURL}products/${item.id}`, formData, config).
             then((response) => {
                 if (response.status == 200 || response.status == 201) {
                     Toast.show({
@@ -93,8 +90,8 @@ const ProductForm = (props) => {
             });
     };
 
-    const web = async () => {
-        await fetch(image)
+    const web = () => {
+        fetch(image)
             .then((res) => res.blob())
             .then((myBlob) => {
                 const myFile = new File([myBlob], 'image.jpeg', {
@@ -102,15 +99,16 @@ const ProductForm = (props) => {
                 });
                 console.log(myFile);
                 setWebi({
-                    uri: URL.createObjectURL(myFile),
+                    uri: URL.createObjectURL(myFile) + myFile.type,
                     type: myFile.type,
                     name: myFile.name
                 });
+                console.log(webi);
                 // logs: Blob { size: 1024, type: "image/jpeg" }
             });
     };
 
-    const addProduct = () => {
+    const addProduct = async () => {
         if (
             name == "" ||
             brand == "" ||
@@ -124,8 +122,31 @@ const ProductForm = (props) => {
         let formData = new FormData();
 
         if (Platform.OS == "web") {
-            console.log(webi);
-            formData.append('images', webi);
+
+            await fetch(image)
+                .then((res) => res.blob())
+                .then((myBlob) => {
+                    const myFile = new File([myBlob], 'image.jpeg', {
+                        type: myBlob.type,
+                    });
+                    setWebi({
+                        uri: URL.createObjectURL(myFile) + myFile.type,
+                        type: myFile.type,
+                        name: myFile.name
+                    });
+                    formData.append("image", {
+                        uri: URL.createObjectURL(myFile),
+                        type: myFile.type,
+                        name: myFile.name
+                    });
+                    console.log({
+                        uri: URL.createObjectURL(myFile) + '.' + myFile.type.split('image/'),
+                        type: myFile.type,
+                        name: myFile.name
+                    });
+                    // logs: Blob { size: 1024, type: "image/jpeg" }
+                });
+
         } else {
             const newImageUri = "file:///" + image.split("file:/").join("");
             console.log(newImageUri);
@@ -170,6 +191,7 @@ const ProductForm = (props) => {
         if (!props.route.params) {
             setItem(null);
         } else {
+            console.log(props.route.params);
             setItem(props.route.params.item);
             setBrand(props.route.params.item.brand);
             setName(props.route.params.item.name);
@@ -177,7 +199,7 @@ const ProductForm = (props) => {
             setDescription(props.route.params.item.description);
             setMainImage(props.route.params.item.mainImage);
             setImage(props.route.params.item.image);
-            setCategory(props.route.params.item.category?props.route.params.item.category._id:null);
+            setCategory(props.route.params.item.category ? props.route.params.item.category._id : null);
             setCountInStock(props.route.params.item.countInStock.toString());
 
 
@@ -213,7 +235,6 @@ const ProductForm = (props) => {
         if (!result.canceled) {
             setMainImage(result.assets[0].uri);
             setImage(result.assets[0].uri);
-            web();
         }
     };
 
@@ -306,7 +327,7 @@ const ProductForm = (props) => {
                     style={styles.buttonContainer}
                     large
                     primary
-                    onPress={() => { addProduct(); }}>
+                    onPress={() => addProduct()}>
                     <Text style={styles.buttonText}>
                         Confirm
                     </Text>
