@@ -68,7 +68,6 @@ const UserProfile = (props) => {
   return (
     <ScrollView contentContainerStyle={styles.subContainer}>
       <Text style={{ fontSize: 30 }}>
-
         {userProfile ? userProfile.name : ""}
       </Text>
       <View style={{ marginTop: 20 }}>

@@ -18,10 +18,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import axios from 'axios';
-import baseURL from '../../../assets/common/baseURL';
+import baseURL from '../../../assets/common/baseUrl';
 
 
-var { height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const Confirm = (props) => {
 
@@ -77,12 +77,14 @@ const Confirm = (props) => {
   const confirm = props.route.params;
   return (
     <ScrollView contentContainerStyle={style.container}>
-      {JSON.stringify(finalOrder)}
-      <View style={style.title}>
+      <View style={{ alignItems: 'center', margin: 20 }}>
+        <Button title='place order' onPress={() => confirmOrder()} />
+      </View>
+      <View style={style.titleContainer}>
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Confirm Order</Text>
         {props.route.params ? (
           <View style={{ borderWidth: 1, borderColor: 'orange' }}>
-            <Text style={style.shipping}>Shipping to:</Text>
+            <Text style={style.title}>Shipping to:</Text>
             <View style={{ padding: 8 }}>
               <Text>Address: {finalOrder.order.order.shippingAddress1}</Text>
               <Text>Address2: {finalOrder.order.order.shippingAddress2}</Text>
@@ -91,6 +93,7 @@ const Confirm = (props) => {
               <Text>Country: {finalOrder.order.order.country}</Text>
             </View>
             <Text style={style.title}>
+              Items
             </Text>
             <FlatList
               data={finalOrder.order.order.orderItems}
@@ -140,9 +143,7 @@ const Confirm = (props) => {
           </View>
         ) : null}
       </View>
-      <View style={{ alignItems: 'center', margin: 20 }}>
-        <Button onPress={confirmOrder}>Place Order</Button>
-      </View>
+
     </ScrollView>
   );
 };
@@ -159,19 +160,30 @@ const style = StyleSheet.create({
   container: {
     height: height,
     padding: 8,
-    alignContent: 'center',
-    backgroundColor: 'white',
+    alignContent: "center",
+    backgroundColor: "white",
+  },
+  titleContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 8,
   },
   title: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 8,
-  },
-  shipping: {
-    alignSelf: 'center',
+    alignSelf: "center",
     margin: 8,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  listItem: {
+    alignItems: "center",
+    backgroundColor: "white",
+    justifyContent: "center",
+    width: width / 1.2,
+  },
+  body: {
+    margin: 10,
+    alignItems: "center",
+    flexDirection: "row",
   },
 });
 

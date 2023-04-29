@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Dimensions, TextInput, StyleSheet } from 'react-native';
-import baseURL from '../../assets/common/baseURL';
+import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EasyButton from '../../Shared/StyledComponents/EasyButton';

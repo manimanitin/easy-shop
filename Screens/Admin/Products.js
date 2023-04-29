@@ -8,7 +8,7 @@ import ListItem from './ListItem';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import axios from 'axios';
-import baseURL from '../../assets/common/baseURL';
+import baseURL from '../../assets/common/baseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EasyButton from '../../Shared/StyledComponents/EasyButton';
 var { height, width } = Dimensions.get('window');
@@ -19,16 +19,16 @@ const ListHeader = () => {
         <View style={styles.listHeader}>
             <View style={styles.headerItem}></View>
             <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Brand</Text>
+                <Text style={{ fontWeight: 600 }}>Brand</Text>
             </View>
             <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Name</Text>
+                <Text style={{ fontWeight: 600 }}>Name</Text>
             </View >
             <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Category</Text>
+                <Text style={{ fontWeight: 600 }}>Category</Text>
             </View>
             <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Price</Text>
+                <Text style={{ fontWeight: 600 }}>Price</Text>
             </View>
         </View>
     );
@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
     headerItem: {
         margin: 3,
         width: width / 6
-        ,
     },
     spinner: {
         height: height / 2,

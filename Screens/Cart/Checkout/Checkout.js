@@ -2,11 +2,10 @@ import React from 'react';
 import { Text, View, Button } from 'react-native';
 import { Select } from 'native-base';
 import FormContainer from '../../../Shared/Form/FormContainer';
-import Input from '../../../Shared/Form/input';
+import Input from '../../../Shared/Form/Input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { useEffect, useState, useContext } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 const countries = require('../../../assets/data/countries.json');
@@ -42,7 +41,7 @@ const Checkout = (props) => {
   }, []);
 
   const checkOut = () => {
-    console.log(user)
+    console.log(user);
     let order = {
       city,
       country,
@@ -55,7 +54,7 @@ const Checkout = (props) => {
       user,
       zip,
     };
-    console.log(order)
+    console.log(props.cartItems);
     props.navigation.navigate('Payment', { order: order });
   };
 
@@ -110,7 +109,7 @@ const Checkout = (props) => {
         </Select>
         <View style={{ width: '80%', alignItems: 'center' }}>
           <Button title='Confirm' onPress={() => checkOut()} />
-        </View>{' '}
+        </View>
       </FormContainer>
     </KeyboardAwareScrollView>
   );

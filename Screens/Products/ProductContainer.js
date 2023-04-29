@@ -27,7 +27,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import Banner from '../../Shared/Banner';
 import CategoryFilter from './CategoryFilter';
-import baseURL from '../../assets/common/baseURL';
+import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
@@ -135,7 +135,7 @@ const ProductContainer = (props) => {
                 borderRadius='4'
                 py='3'
                 px='1'
-                fontSize='14'
+                fontSize={14}
                 _web={{
                   _focus: {
                     borderColor: 'muted.300',

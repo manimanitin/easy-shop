@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import FormContainer from '../../Shared/Form/FormContainer';
-import Input from '../../Shared/Form/input';
+import Input from '../../Shared/Form/Input';
 import Error from '../../Shared/Error';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';

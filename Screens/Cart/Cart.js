@@ -3,7 +3,6 @@ import {
   View,
   Dimensions,
   StyleSheet,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import {
@@ -22,7 +21,6 @@ import EasyButton from '../../Shared/StyledComponents/EasyButton';
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 
-import icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartAction';
 import CartItem from './CartItem';
@@ -58,7 +56,7 @@ const Cart = (props) => {
                     recalculateHiddenLayout={true}
                     useFlatList={true}
                     data={props.cartItems}
-                    keyExtractor={(data) => data.product._id.toString()}
+                    keyExtractor={(data) => data.product ? data.product._id.toString() : null}
                     renderItem={(data) => <CartItem item={data} />}
                     renderHiddenItem={(data) => (
                       <View style={styles.hiddenContainer}>
@@ -78,7 +76,6 @@ const Cart = (props) => {
                     stopLeftSwipe={75}
                     rightOpenValue={-75}
                   />
-                  {/* <CartItem item={props.cartItems} /> */}
                 </Box>
                 <Spacer />
                 <HStack>
@@ -120,6 +117,7 @@ const Cart = (props) => {
       </ScrollView>
     </>
   );
+
 };
 
 const mapStateToProps = (state) => {

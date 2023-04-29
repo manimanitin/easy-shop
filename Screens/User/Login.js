@@ -89,7 +89,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   middleText: {
-    marginBottom: '20',
+    marginBottom: 20,
     alignSelf: 'center'
   }
 });
